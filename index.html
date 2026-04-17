@@ -3,281 +3,1437 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arce Hnos. — Control de Elementos por Chofer</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<title>Arce Hnos. — Control de Elementos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --rojo: #D62A35;
-    --azul: #001841;
-    --blanco: #FFFFFF;
-    --gris-claro: #f4f5f7;
-    --gris-borde: #dde1e9;
-    --gris-texto: #4a5568;
-    --verde: #16a34a;
-    --amarillo: #ca8a04;
-    --shadow: 0 2px 12px rgba(0,24,65,0.10);
-    --shadow-lg: 0 8px 32px rgba(0,24,65,0.15);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--gris-claro);
-    color: var(--azul);
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: var(--azul);
-    color: var(--blanco);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: var(--shadow-lg);
-  }
-  .header-inner {
-    display: flex;
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --ink:       #0d1b2e;
+  --ink-mid:   #2d3f55;
+  --ink-soft:  #6b7d93;
+  --ink-faint: #9eabbe;
+  --red:       #cc2233;
+  --red-dk:    #a81b2a;
+  --red-bg:    #fff1f2;
+  --red-pale:  #ffe4e6;
+  --bg:        #f5f6f8;
+  --surface:   #ffffff;
+  --border:    #e4e8ef;
+  --border-md: #cdd4de;
+  --green:     #0e9f6e;
+  --green-bg:  #ecfdf5;
+  --amber:     #b45309;
+  --amber-bg:  #fffbeb;
+  --blue-bg:   #eff6ff;
+  --blue:      #1d4ed8;
+  --r:         10px;
+  --r-lg:      14px;
+  --sh:        0 1px 3px rgba(13,27,46,.06), 0 4px 16px rgba(13,27,46,.07);
+  --sh-md:     0 2px 8px rgba(13,27,46,.08), 0 12px 32px rgba(13,27,46,.10);
+  --header-h:  64px;
+  --sidebar-w: 280px;
+}
+ 
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+html { font-size: 15px; }
+ 
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+ 
+/* ═══════════════════════════════════════════════
+   LOGO SVG ARCE HNOS  (vectorizado del manual)
+═══════════════════════════════════════════════ */
+.arce-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.arce-logo__mark {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+/* círculo */
+.arce-logo__mark svg { display: block; }
+ 
+.arce-logo__text { line-height: 1; }
+.arce-logo__name {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.arce-logo__sub {
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: rgba(255,255,255,.55);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 1px;
+  display: block;
+}
+ 
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: var(--header-h);
+  background: var(--ink);
+  box-shadow: 0 1px 0 rgba(255,255,255,.06), var(--sh-md);
+}
+.header-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 24px;
+}
+/* Red accent stripe on logo area */
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding-right: 24px;
+  margin-right: 20px;
+  border-right: 1px solid rgba(255,255,255,.1);
+  height: 100%;
+}
+.header-title {
+  flex: 1;
+  min-width: 0;
+}
+.header-title h1 {
+  font-size: .9rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.header-title p {
+  font-size: .72rem;
+  color: rgba(255,255,255,.42);
+  font-weight: 400;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.header-pill {
+  flex-shrink: 0;
+  margin-left: 16px;
+  background: var(--red);
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 100px;
+}
+/* Mobile hamburger */
+.menu-toggle {
+  display: none;
+  margin-left: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: rgba(255,255,255,.75);
+  flex-shrink: 0;
+}
+.menu-toggle svg { display: block; }
+ 
+/* ═══════════════════════════════════════════════
+   SYNC BAR
+═══════════════════════════════════════════════ */
+.sync-bar {
+  background: #111d2e;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: .72rem;
+  color: rgba(255,255,255,.5);
+}
+.sync-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  flex-shrink: 0;
+  animation: blink 2.5s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.sync-bar input {
+  flex: 1;
+  min-width: 220px;
+  max-width: 420px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem;
+  color: rgba(255,255,255,.8);
+  outline: none;
+  transition: border-color .2s;
+}
+.sync-bar input::placeholder { color: rgba(255,255,255,.28); }
+.sync-bar input:focus { border-color: var(--red); }
+.sync-bar button {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.sync-bar button:hover { background: var(--red-dk); }
+#syncStatus { margin-left: auto; white-space: nowrap; font-size: .7rem; }
+ 
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: calc(100vh - var(--header-h) - 41px);
+}
+ 
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════ */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: calc(var(--header-h) + 41px);
+  height: calc(100vh - var(--header-h) - 41px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.sidebar-head {
+  padding: 16px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-label {
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.search-wrap {
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+.search-wrap input {
+  width: 100%;
+  padding: 8px 10px 8px 32px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.search-wrap input:focus {
+  border-color: var(--red);
+  background: #fff;
+}
+.sidebar-list { flex: 1; padding: 6px 0 16px; }
+ 
+.chofer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: background .12s, border-color .12s;
+}
+.chofer-item:hover { background: var(--bg); }
+.chofer-item.active {
+  background: var(--red-bg);
+  border-left-color: var(--red);
+}
+.chofer-avatar {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--ink-mid);
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.chofer-item.active .chofer-avatar {
+  background: var(--red-pale);
+  border-color: var(--red);
+  color: var(--red);
+}
+.chofer-meta { min-width: 0; flex: 1; }
+.chofer-name {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+.chofer-item.active .chofer-name { color: var(--red-dk); }
+.chofer-detail {
+  font-size: .68rem;
+  color: var(--ink-faint);
+  margin-top: 1px;
+}
+ 
+/* ═══════════════════════════════════════════════
+   MAIN PANEL
+═══════════════════════════════════════════════ */
+.main {
+  padding: 28px 28px 48px;
+  min-width: 0;
+}
+ 
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 200px);
+  gap: 14px;
+  color: var(--ink-faint);
+  text-align: center;
+  padding: 32px;
+}
+.empty-icon {
+  width: 56px; height: 56px;
+  background: var(--border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .5;
+}
+.empty-state h3 {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--ink-mid);
+}
+.empty-state p {
+  font-size: .8rem;
+  max-width: 260px;
+  line-height: 1.5;
+}
+ 
+/* ─── Chofer header ─── */
+.chofer-hd {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.chofer-hd-left h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.chofer-hd-left .badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .68rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 6px;
+  letter-spacing: .03em;
+}
+.badge-ink { background: var(--ink); color: #fff; }
+.badge-border { background: var(--bg); color: var(--ink-mid); border: 1px solid var(--border); }
+ 
+/* ─── Buttons ─── */
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.btn-red    { background: var(--red); color: #fff; }
+.btn-red:hover { background: var(--red-dk); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(204,34,51,.3); }
+.btn-dark   { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: var(--ink-mid); transform: translateY(-1px); }
+.btn-ghost  { background: transparent; color: var(--ink-mid); border: 1.5px solid var(--border); }
+.btn-ghost:hover { border-color: var(--ink-mid); background: var(--bg); }
+.btn-green  { background: var(--green); color: #fff; }
+.btn-green:hover { background: #0a8a5e; transform: translateY(-1px); }
+ 
+/* ─── Stats strip ─── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  box-shadow: var(--sh);
+}
+.stat-n {
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+.stat-n.red    { color: var(--red); }
+.stat-n.green  { color: var(--green); }
+.stat-n.amber  { color: var(--amber); }
+.stat-lbl {
+  font-size: .65rem;
+  font-weight: 500;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-top: 4px;
+}
+ 
+/* ─── Entrega card ─── */
+.entrega-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  margin-bottom: 16px;
+  box-shadow: var(--sh);
+  overflow: hidden;
+}
+.entrega-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  background: var(--ink);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.entrega-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.entrega-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.entrega-head-left h3 {
+  font-size: .82rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -.01em;
+}
+.veh-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.veh-tag {
+  background: rgba(255,255,255,.1);
+  color: rgba(255,255,255,.85);
+  font-size: .64rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 5px;
+  letter-spacing: .04em;
+  border: 1px solid rgba(255,255,255,.12);
+}
+ 
+/* ─── Table ─── */
+.tbl-wrap { overflow-x: auto; }
+table.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+table.tbl thead tr {
+  background: #fafbfc;
+  border-bottom: 1px solid var(--border);
+}
+table.tbl th {
+  padding: 9px 16px;
+  text-align: left;
+  font-size: .62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+table.tbl td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+table.tbl tr:last-child td { border-bottom: none; }
+table.tbl tbody tr:hover td { background: #fafbfc; }
+ 
+.el-name {
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.fecha-txt {
+  font-size: .72rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+ 
+/* State select */
+.state-select {
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem;
+  font-weight: 600;
+  border-radius: 7px;
+  padding: 5px 10px;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  outline: none;
+  transition: border-color .15s, background .15s;
+  background: var(--bg);
+  color: var(--ink-mid);
+}
+.state-select:focus { border-color: var(--red); }
+.state-select.s-ok     { background: var(--green-bg); border-color: #a7f3d0; color: #065f46; }
+.state-select.s-falt   { background: var(--red-bg);   border-color: var(--red-pale); color: var(--red-dk); }
+.state-select.s-pend   { background: var(--amber-bg); border-color: #fde68a; color: var(--amber); }
+ 
+/* Note input */
+.note-inp {
+  width: 100%;
+  min-width: 140px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .78rem;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 10px;
+  outline: none;
+  color: var(--ink);
+  background: var(--bg);
+  transition: border-color .15s, background .15s;
+}
+.note-inp:focus { border-color: var(--red); background: #fff; }
+ 
+/* ═══════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════ */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(13,27,46,.6);
+  z-index: 400;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+  padding: 16px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  width: 100%;
+  max-width: 500px;
+  box-shadow: var(--sh-md);
+  overflow: hidden;
+  animation: rise .22s ease;
+}
+@keyframes rise {
+  from { transform: translateY(18px) scale(.98); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+.modal-head {
+  background: var(--ink);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-head h3 {
+  font-size: .9rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -.01em;
+}
+.modal-close {
+  background: rgba(255,255,255,.1);
+  border: none;
+  color: rgba(255,255,255,.7);
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.modal-close:hover { background: rgba(255,255,255,.2); color: #fff; }
+.modal-body {
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.modal-body .full { grid-column: 1 / -1; }
+.field label {
+  display: block;
+  font-size: .65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+.field input, .field select {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .83rem;
+  padding: 9px 11px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  transition: border-color .15s, background .15s;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--red);
+  background: #fff;
+}
+.modal-foot {
+  padding: 14px 22px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+ 
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 600;
+  background: var(--ink);
+  color: #fff;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-size: .8rem;
+  font-weight: 500;
+  box-shadow: var(--sh-md);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all .28s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+  border-left: 3px solid var(--red);
+  max-width: 320px;
+}
+.toast.show { transform: none; opacity: 1; }
+ 
+/* ═══════════════════════════════════════════════
+   PRINT
+═══════════════════════════════════════════════ */
+.print-only { display: none; }
+@media print {
+  header, .sync-bar, .sidebar, .btn-row, #modalOverlay { display: none !important; }
+  body { background: #fff; }
+  .app { display: block; }
+  .main { padding: 0; }
+  .entrega-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; margin-bottom: 12px; }
+  .state-select, .note-inp { border: none; background: transparent; font-size: .8rem; }
+  .print-only {
+    display: flex !important;
     align-items: center;
-    gap: 20px;
-    padding: 10px 20px;
-    border-bottom: 3px solid var(--rojo);
+    gap: 14px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--red);
+    margin-bottom: 24px;
   }
-  .logo-arce {
-    height: 45px;
-    width: auto;
-    flex-shrink: 0;
-  }
-  .header-title { flex: 1; }
-  .header-title h1 {
-    font-size: 1rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    line-height: 1.1;
-  }
-  .header-title p {
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.6);
-  }
-  
-  /* ── SYNC BANNER ── */
-  .sync-banner {
-    background: #002561;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .sync-url-input {
-    flex: 1;
-    min-width: 250px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.1);
-    color: white;
-    outline: none;
-  }
-
-  /* ── LAYOUT RESPONSIVO ── */
-  .app-wrapper {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    min-height: calc(100vh - 120px);
-  }
-
-  @media (max-width: 850px) {
-    .app-wrapper { grid-template-columns: 1fr; }
-    .sidebar { height: 350px; position: relative; top: 0; border-right: none; border-bottom: 2px solid var(--gris-borde); }
-    .header-badge { display: none; }
-  }
-
-  /* ── SIDEBAR ── */
+  .stats { grid-template-columns: repeat(5,1fr); }
+}
+ 
+/* ═══════════════════════════════════════════════
+   MOBILE — sidebar drawer
+═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root { --header-h: 56px; }
+  .header-pill { display: none; }
+  .menu-toggle { display: flex; }
+  .header-inner { padding: 0 16px; }
+  .header-logo-wrap { padding-right: 16px; margin-right: 12px; }
+  .sync-bar { padding: 8px 16px; }
+  .sync-bar input { min-width: 150px; }
+  #syncStatus { display: none; }
+ 
+  .app { grid-template-columns: 1fr; }
+ 
   .sidebar {
-    background: var(--blanco);
-    border-right: 1px solid var(--gris-borde);
-    padding: 20px 0;
-    overflow-y: auto;
-    position: sticky;
-    top: 120px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(300px, 85vw);
+    z-index: 300;
+    transform: translateX(-100%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 32px rgba(0,0,0,.2);
   }
-  .sidebar-section-title {
-    font-size: 0.7rem;
-    font-weight: 800;
-    color: var(--rojo);
-    text-transform: uppercase;
-    padding: 0 20px 8px;
-    letter-spacing: 1px;
-  }
-  .search-box { padding: 0 16px 15px; }
-  .search-box input {
-    width: 100%;
-    padding: 10px;
-    border: 1.5px solid var(--gris-borde);
-    border-radius: 8px;
-    font-family: inherit;
-  }
-
-  .chofer-item {
-    padding: 12px 20px;
-    cursor: pointer;
-    border-left: 4px solid transparent;
-    transition: 0.2s;
-  }
-  .chofer-item:hover { background: var(--gris-claro); }
-  .chofer-item.active { background: #fff0f0; border-left-color: var(--rojo); }
-  .chofer-name { font-weight: 800; font-size: 0.85rem; display: block; }
-  .chofer-dni { font-size: 0.72rem; color: var(--gris-texto); }
-
-  /* ── MAIN PANEL ── */
-  .main-panel { padding: 25px; }
-  
-  .chofer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 12px;
-    margin-bottom: 25px;
-  }
-  .stat-card {
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    text-align: center;
-  }
-  .stat-num { font-size: 1.5rem; font-weight: 900; display: block; }
-  .stat-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--gris-texto); }
-
-  /* ── TABLAS RESPONSIVAS ── */
-  .section-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
-    overflow: hidden;
-  }
-  .section-card-header {
-    background: var(--azul);
-    color: white;
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-  }
-  .table-container {
-    width: 100%;
-    overflow-x: auto; /* Permite scroll lateral en móviles */
-  }
-  .elementos-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 650px; /* Asegura que la tabla no se colapse */
-  }
-  .elementos-table th {
-    background: #f8f9fc;
-    padding: 12px 15px;
-    text-align: left;
-    font-size: 0.7rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: var(--gris-texto);
-  }
-  .elementos-table td { padding: 12px 15px; border-bottom: 1px solid var(--gris-borde); vertical-align: middle; }
-
-  /* ── BOTONES ── */
-  .btn {
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 0.8rem;
-    cursor: pointer;
-    border: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: 0.2s;
-  }
-  .btn-primary { background: var(--rojo); color: white; }
-  .btn-secondary { background: var(--azul); color: white; }
-  .btn-success { background: var(--verde); color: white; }
-
-  /* ── MODAL ── */
-  .modal-overlay {
+  .sidebar.open { transform: translateX(0); }
+ 
+  .sidebar-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,24,65,0.6);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    background: rgba(13,27,46,.5);
+    z-index: 299;
+    backdrop-filter: blur(2px);
   }
-  .modal-overlay.open { display: flex; }
-  .modal { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; }
-  .form-group { margin-bottom: 15px; }
-  .form-group label { display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; }
-  .form-group input, .form-group select { width: 100%; padding: 10px; border-radius: 8px; border: 1.5px solid var(--gris-borde); }
-
-  .toast {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    padding: 12px 20px;
-    border-radius: 10px;
-    color: white;
-    font-weight: 700;
-    z-index: 1000;
-    display: none;
-    box-shadow: var(--shadow-lg);
-  }
-
-  @media print {
-    header, .sidebar, .btn, .sync-banner { display: none !important; }
-    .app-wrapper { display: block; }
-    .main-panel { padding: 0; }
-  }
+  .sidebar-overlay.open { display: block; }
+ 
+  .main { padding: 20px 16px 48px; }
+  .chofer-hd { gap: 12px; }
+  .chofer-hd-left h2 { font-size: 1.1rem; }
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  .stats .stat:nth-child(n+4) { display: none; }
+  .btn { padding: 8px 12px; font-size: .74rem; }
+  table.tbl th, table.tbl td { padding: 8px 10px; }
+  .nota-col { display: none; }
+  .entrega-head { padding: 11px 14px; }
+}
+ 
+@media (max-width: 420px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stats .stat:nth-child(n+3) { display: none; }
+}
 </style>
 </head>
 <body>
-
+ 
+<!-- ░░ TOAST ░░ -->
+<div class="toast" id="toast"></div>
+ 
+<!-- ░░ MODAL ░░ -->
+<div class="overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Asignar nuevo elemento</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field full">
+        <label>Elemento / Descripción</label>
+        <input type="text" id="newElemento" placeholder="Ej: Matafuego 5 kg" />
+      </div>
+      <div class="field">
+        <label>Vehículo — Camión</label>
+        <input type="text" id="newVehiculo1" placeholder="Ej: AF713FD" />
+      </div>
+      <div class="field">
+        <label>Vehículo — Semi (opcional)</label>
+        <input type="text" id="newVehiculo2" placeholder="Ej: AH191HA" />
+      </div>
+      <div class="field">
+        <label>Fecha de entrega</label>
+        <input type="date" id="newFecha" />
+      </div>
+      <div class="field">
+        <label>Estado inicial</label>
+        <select id="newEstado">
+          <option value="Presente">✅ Presente</option>
+          <option value="Pendiente" selected>⏳ Sin verificar</option>
+          <option value="Faltante">❌ Faltante</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Notas</label>
+        <input type="text" id="newNota" placeholder="Observaciones opcionales..." />
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-red" onclick="agregarElemento()">Agregar elemento</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ░░ SIDEBAR OVERLAY (mobile) ░░ -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+ 
+<!-- ░░ HEADER ░░ -->
 <header>
   <div class="header-inner">
-    <img src="logo colores (1).png" alt="ARCE Hnos." class="logo-arce">
+    <div class="header-logo-wrap">
+      <!-- ARCE HNOS logo SVG — vectorizado del manual de marca -->
+      <a class="arce-logo" href="#">
+        <div class="arce-logo__mark">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- streaks -->
+            <rect x="2" y="9" width="17" height="3.2" rx="1.6" fill="#cc2233"/>
+            <rect x="2" y="14.4" width="12" height="3.2" rx="1.6" fill="#cc2233"/>
+            <!-- circle O -->
+            <circle cx="28.5" cy="20" r="9.5" stroke="#cc2233" stroke-width="3.2" fill="none"/>
+          </svg>
+        </div>
+        <div class="arce-logo__text">
+          <span class="arce-logo__name">ARCE Hnos.</span>
+          <span class="arce-logo__sub">Logística &amp; Transporte</span>
+        </div>
+      </a>
+    </div>
     <div class="header-title">
       <h1>Control de Elementos por Chofer</h1>
-      <p>Transporte Arce Hnos. · Río Cuarto</p>
+      <p>CUIT 30-71535215-6 · Río Cuarto, Córdoba</p>
     </div>
-    <span class="header-badge" style="background:var(--rojo); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">AUDITORÍA</span>
-  </div>
-  <div class="sync-banner">
-    <div style="display:flex; align-items:center; gap:10px; flex:1;">
-      <span>Sheet Sync:</span>
-      <input type="text" class="sync-url-input" id="sheetUrl" placeholder="URL del Apps Script..." />
-      <button class="btn-primary" style="padding: 5px 12px;" onclick="testConnection()">Conectar</button>
-    </div>
-    <span id="syncStatus" style="opacity:0.7;">Desconectado</span>
+    <span class="header-pill">Auditoría</span>
+    <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menú">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <rect y="3" width="20" height="2" rx="1"/>
+        <rect y="9" width="20" height="2" rx="1"/>
+        <rect y="15" width="20" height="2" rx="1"/>
+      </svg>
+    </button>
   </div>
 </header>
-
-<div id="toast" class="toast"></div>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <h3 style="margin-bottom: 20px;">Asignar Nuevo Elemento</h3>
-    <div class="form-group">
-      <label>Elemento / Descripción</label>
-      <input type="text" id="newElemento" placeholder="Matafuego,
+ 
+<!-- ░░ SYNC BAR ░░ -->
+<div class="sync-bar">
+  <div class="sync-dot"></div>
+  <span>Google Sheets:</span>
+  <input type="text" id="sheetUrl" placeholder="URL del Web App de Apps Script…" />
+  <button onclick="testConnection()">Conectar</button>
+  <span id="syncStatus">Sin conexión — datos guardados localmente</span>
+</div>
+ 
+<!-- ░░ LAYOUT ░░ -->
+<div class="app">
+ 
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-label">Choferes</div>
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="9" r="6"/><path d="M15 15l3 3"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Buscar chofer o DNI…" oninput="filterChoferes()" />
+      </div>
+    </div>
+    <div class="sidebar-list" id="choferList"></div>
+  </aside>
+ 
+  <!-- MAIN -->
+  <main class="main">
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <h3>Seleccioná un chofer</h3>
+      <p>Elegí un chofer en el panel izquierdo para ver y auditar sus elementos asignados.</p>
+    </div>
+ 
+    <!-- Detail (filled by JS) -->
+    <div id="choferDetail" style="display:none"></div>
+  </main>
+ 
+</div>
+ 
+<script>
+// ════════════════════════════════════════════════════════════════
+// BASE DE DATOS
+// ════════════════════════════════════════════════════════════════
+const DB = {
+  choferes: [
+    { id:1, nombre:"VIDELA JONATHAN DARIO", dni:"31640017", entregas:[
+      { fecha:"2025-12-16", vehiculos:["AG807KZ","AG807KF"], elementos:["Funda asientos conductor y acompañante"] }
+    ]},
+    { id:2, nombre:"VARGAS FRANCISCO NAHUEL", dni:"43158192", entregas:[
+      { fecha:"2025-12-06", vehiculos:["AD751NF","AH492CR"], elementos:["Juego de cuñas nuevo"] }
+    ]},
+    { id:3, nombre:"SOSA SIMON ANDRES", dni:"39422949", entregas:[
+      { fecha:"2025-12-03", vehiculos:["AF482AS","AF733GV"], elementos:[
+        "Llave unidad, llave predio y llavero surtidor","2 Matafuego 5 kg",
+        "9 fajas con sus respectivas tracas","Llave parante","Control climatizador",
+        "Perno de enganche","Gato","Soga precinto",
+        "Documentación completa incluida Axion Card y Shell Flota"
+      ]},
+      { fecha:"2026-01-17", vehiculos:["AF482AS","AF733GV"], elementos:["Fundas asiento chofer y acompañante"] }
+    ]},
+    { id:4, nombre:"ROJAS MAYCO", dni:"41116941", entregas:[
+      { fecha:"2025-09-08", vehiculos:["AE219VG","AB249CK"], elementos:[
+        "Documentación completa de ambas unidades","Llave parante",
+        "Llave unidad, llave tanques y llave predio","5 fajas con sus tracas",
+        "Soga precinto","Matafuego 5 kg","Gato","Balizas"
+      ]},
+      { fecha:"2026-03-07", vehiculos:["AG318SU","AC932AW"], elementos:[
+        "Gato","Soga Precinto","Calzas","Matafuego 5 kg","Llave tanque mochila",
+        "Llave unidad","Llave parante","Documentación completa de ambas unidades",
+        "11 fajas con sus respectivos trakas"
+      ]}
+    ]},
+    { id:5, nombre:"RODRIGUEZ LUIS ALBERTO", dni:"22079392", entregas:[
+      { fecha:"2025-12-15", vehiculos:["PMP580","NXU365"], elementos:[
+        "Casco","Chaleco","Matafuego 5 kg","7 fajas con sus respectivos trakas",
+        "Gato","Soga precinto","Llave rueda / Parante",
+        "Llave unidad y llave predio","Documentación completa ambas unidades"
+      ]}
+    ]},
+    { id:6, nombre:"RODRIGUEZ CARLOS MARTIN", dni:"27897880", entregas:[
+      { fecha:"2025-11-27", vehiculos:["AG318SC","AE099ZL"], elementos:[
+        "Llaves del predio","Llave de la unidad con llavero para carga",
+        "5 fajas con sus respectivas tracas","1 soga precinto",
+        "Llave de rueda y llave parante","Casco","Chaleco","Axion card",
+        "Documentación completa de ambas unidades","Matafuego de 5 kg"
+      ]},
+      { fecha:"2025-12-19", vehiculos:["AE219VG","AE099ZL"], elementos:["3 fajas con sus respectivos tracas"] }
+    ]},
+    { id:7, nombre:"RAMIREZ FRANCO IVAN", dni:"41215706", entregas:[
+      { fecha:"2025-07-14", vehiculos:["AG318SC","AE289HA"], elementos:[
+        "7 fajas","1 juego de cuñas","Llave N°14 para lona","Soga precinto",
+        "Llave del camión, mando a distancia, llavero surtidor",
+        "Documentación completa incluida Tarjeta YPF y Axion Card",
+        "Matafuego 5 kg","Manual unidad","Llave levanta cabina","Valizas"
+      ]},
+      { fecha:"2025-10-27", vehiculos:["AH246JHP","AF996UM"], elementos:[
+        "1 Gato","Llave de rueda original","Perno de enganche","Llave levanta cabina original",
+        "Dos balizas","Alfombras conductor, piso central y acompañante",
+        "Cable de luz y cable ABS","Cenicero y encendedor","Manual unidad original",
+        "Llave, control remoto y llaves de tanques","Matafuego cabina 2 Kg",
+        "2 almohadas originales","Control Viesa","Matafuego 5 Kg",
+        "5 Fajas con sus tracas","Soga Precinto","Cuñas de goma",
+        "4 Cantoneras","Documentación completa ambas unidades"
+      ]},
+      { fecha:"2025-12-17", vehiculos:["AH246JP","AF996UM"], elementos:["Fundas asiento chofer y acompañante"] }
+    ]},
+    { id:8, nombre:"MARQUEZ MAXIMILIANO ELIO", dni:"35511685", entregas:[
+      { fecha:"2025-08-14", vehiculos:["AF713FD","AH191HA"], elementos:[
+        "Soga precinto","Manual unidad","Matafuego 5 kg","Matafuego 2.5 kg",
+        "5 fajas con sus tracas","Juego de cuñas","Gato","Kit de inflado",
+        "Perno de enganche","Llave de rueda","2 Valizas","Llave de unidad, tanques y predio"
+      ]}
+    ]},
+    { id:9, nombre:"LOBO HUGO JAVIER", dni:"26862029", entregas:[
+      { fecha:"2026-02-04", vehiculos:["AE468CL"], elementos:["Funda butaca chofer y acompañante"] },
+      { fecha:"2026-03-11", vehiculos:["AE468CL"], elementos:["Mameluco de trabajo"] }
+    ]},
+    { id:10, nombre:"IRACHETA MARTIN EZEQUIEL", dni:"35884403", entregas:[
+      { fecha:"2026-02-02", vehiculos:["AG318SU"], elementos:["1 juego de calzas"] },
+      { fecha:"2026-03-15", vehiculos:["AI063WC"], elementos:["Fundas asiento conductor y acompañante"] },
+      { fecha:"2026-03-15", vehiculos:["AI063WC","AI063WD"], elementos:[
+        "Pala","Balde de arena","Lanza de arrastre","2 cuñas",
+        "2 matafuegos 5 kg con sus tarjetas","Llavero ID Scania","Llavero surtidor",
+        "3 alfombras","Encendedor 12V","Cenicero","Manual unidad","Control climatizador",
+        "Control batea","Caja de herramientas original completa",
+        "Llave unidad, control a distancia, llave tanques, llave cajón batea",
+        "Pistola y manguera de aire cabina","2 almohadas","Documentación completa ambas unidades",
+        "Matafuego cabina 2½ kg","Conos","Llave rueda","Gato","Perno de enganche",
+        "Llave levanta cabina","2 balizas"
+      ]}
+    ]},
+    { id:11, nombre:"DOMINGUEZ JOSE", dni:"36479589", entregas:[
+      { fecha:"2026-01-15", vehiculos:["PBZ608","AG588UR"], elementos:["2 conos reflectivos de 90 cm"] }
+    ]},
+    { id:12, nombre:"DIAZ MIGUEL EDUARDO", dni:"39541921", entregas:[
+      { fecha:"2025-12-16", vehiculos:["AA831MG","AG047MB"], elementos:["Funda asientos conductor y acompañante"] }
+    ]},
+    { id:13, nombre:"ALDAMA MARIANO DANIEL", dni:"33603391", entregas:[
+      { fecha:"2026-01-28", vehiculos:["AE219VG","AE099ZL"], elementos:[
+        "Llaves de la unidad y del predio con llavero surtidor",
+        "8 fajas con sus respectivos trakas","1 soga precinto 70 mts",
+        "Llave rueda y llave parante","Casco","Chaleco",
+        "Documentación completa unidad","Matafuego 5 kg"
+      ]}
+    ]},
+    { id:14, nombre:"VELAZQUEZ MARCELO GUSTAVO", dni:"27897420", entregas:[
+      { fecha:"2026-03-12", vehiculos:["AH920LF"], elementos:["Mameluco de trabajo"] }
+    ]},
+    { id:15, nombre:"VASCONCELO OSVALDO FERNANDO", dni:"31591622", entregas:[
+      { fecha:"2025-04-17", vehiculos:["AH246JP"], elementos:[
+        "1 Gato","Llave rueda original","Perno enganche","Llave levanta cabina original",
+        "Dos juegos de baliza","Alfombras conductor, piso central y acompañante",
+        "Cable de luz y cable ABS","Cenicero y encendedor","Manual unidad original",
+        "Llave, control remoto, llave tanques","Matafuego cabina 2 kg y pistola de aire"
+      ]},
+      { fecha:"2025-12-06", vehiculos:["AH920LE","AH920KP"], elementos:[
+        "Documentación completa ambas unidades","Llave unidad","Llavero surtidor",
+        "Llaves cajón","Manual unidad","Control climati e inclinómetro",
+        "Alfombras originales y almohadones","Gato","Perno de enganche","Valizas",
+        "Llave levanta cabina","Llave rueda","2 matafuegos 5 kg con comprobantes de carga",
+        "2 Conos","Lanza","Pala plástica","Juego de cuñas","Balde de arena",
+        "Cenicero","Encendedor","Llavero ID Scania","Botiquín primeros auxilios"
+      ]},
+      { fecha:"2025-12-19", vehiculos:["AH920LE"], elementos:["Funda asientos conductor y acompañante"] }
+    ]},
+    { id:16, nombre:"ROMERO HUGO ALBERTO", dni:"17884937", entregas:[
+      { fecha:"2024-09-09", vehiculos:[], elementos:["Soga precinto de 60 metros"] }
+    ]},
+    { id:17, nombre:"PEREYRA LEONARDO GASTON", dni:"25119721", entregas:[
+      { fecha:"2025-12-16", vehiculos:["AH299OI","AF074SD"], elementos:["Fundas asiento conductor y acompañante"] }
+    ]},
+    { id:18, nombre:"MOROSINI ALFREDO", dni:"29235980", entregas:[
+      { fecha:"2025-12-19", vehiculos:["AF969YW","AE895JL"], elementos:["Funda asientos conductor y acompañante"] }
+    ]},
+    { id:19, nombre:"GUAJARDO DARIO IGNACIO", dni:"33890528", entregas:[
+      { fecha:"2025-03-10", vehiculos:["AF713FD","AF074SD"], elementos:[
+        "11 fajas de sujeción con 11 tracas","3 fajas anchas con sus respectivos tracas",
+        "1 matafuegos de 5 kg","1 matafuegos de 2,5 kg","2 Balizas","Llave cubierta",
+        "Llave parantes","Llave levanta cabina","Manual de la unidad","1 soga precinto",
+        "Perno de enganche","Kit manguera de inflado","1 cenicero original",
+        "Llave del camión, mando a distancia y llaves de tanque gasoil y urea",
+        "1 Gato","1 Casco","1 Chaleco","Un juego de cuñas para las cubiertas",
+        "Documentación completa del camión y semi incluida tarjeta YPF y AXION"
+      ]},
+      { fecha:"2025-07-25", vehiculos:["AH492CW","AH400BC"], elementos:[
+        "11 fajas con sus tracas","1 matafuego 5 kg y 1 de 2.5 kg","Gato",
+        "Llave rueda original","Perno de enganche","2 valizas",
+        "Alfombras conductor, piso central y acompañante","Cable de luz y ABS",
+        "Cenicero y encendedor","Manual unidad original","Llave, control remoto y llave tanques",
+        "2 almohadas originales","Control Viessa","Manual tacógrafo"
+      ]},
+      { fecha:"2025-12-06", vehiculos:["AH492CW","AH400BC"], elementos:["Juego de cuñas nuevo"] }
+    ]},
+    { id:20, nombre:"GIANINETTO SAMUEL DANIEL", dni:"25063499", entregas:[
+      { fecha:"2025-12-19", vehiculos:["AH062LG","AG852PB"], elementos:["Funda asientos conductor y acompañante"] },
+      { fecha:"2026-01-03", vehiculos:["AH062LG","AG852PB"], elementos:["Botiquín de primeros auxilios"] }
+    ]},
+    { id:21, nombre:"BRAIAN MAURICIO EZEQUIEL", dni:"27018324", entregas:[
+      { fecha:"2025-12-06", vehiculos:["AF087FB","AH246JT"], elementos:[
+        "Llave unidad","Documentación","Llavero surtidor","Valizas","Cuñas",
+        "Perno de enganche","Gato","Balde de arena","Manual unidad","Cenicero",
+        "Llave cajón","Control climati e inclinómetro","2 matafuegos 5 kg con sus tarjetas",
+        "Llave rueda","Llave masa","Llave levanta cabina","Vejiga de repuesto",
+        "Manguera de inflado original"
+      ]},
+      { fecha:"2025-12-26", vehiculos:["AF087FB","AH246JT"], elementos:["Fundas asientos conductor y acompañante"] },
+      { fecha:"2026-01-24", vehiculos:["AF087FB","AH246JT"], elementos:["1 Botiquín primeros auxilios"] },
+      { fecha:"2026-03-10", vehiculos:["AF087FB"], elementos:["Mameluco de trabajo"] }
+    ]},
+    { id:22, nombre:"ALCANIS MAXIMILIANO", dni:"39993787", entregas:[
+      { fecha:"2026-03-17", vehiculos:["AF206YP","AH669DS"], elementos:[
+        "Pala","Balde","Conos","2 matafuegos de 5 kg","Manguera de inflado",
+        "Calza","Gato","2 valizas","Llave rueda","Lanza de arrastre","Casco y chaleco",
+        "Documentación completa ambas unidades","Control batea","Cenicero",
+        "Botiquín primeros auxilios","Manual de la unidad"
+      ]}
+    ]}
+  ]
+};
+ 
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let currentId = null;
+let auditData = {};
+let sheetUrl  = '';
+ 
+function loadLocal() {
+  try { auditData = JSON.parse(localStorage.getItem('arce_audit') || '{}'); } catch(e){}
+  sheetUrl = localStorage.getItem('arce_sheet_url') || '';
+  if (sheetUrl) document.getElementById('sheetUrl').value = sheetUrl;
+}
+function saveLocal() {
+  localStorage.setItem('arce_audit', JSON.stringify(auditData));
+}
+ 
+// ════════════════════════════════════════════════════════════════
+// SIDEBAR
+// ════════════════════════════════════════════════════════════════
+function initials(name) {
+  const parts = name.trim().split(' ');
+  return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+}
+ 
+function cap(s) {
+  return s.replace(/\b\w/g, c => c.toUpperCase()).replace(/\B\w/g, c => c.toLowerCase());
+}
+ 
+function renderSidebar(q = '') {
+  const list = document.getElementById('choferList');
+  list.innerHTML = '';
+  const lq = q.toLowerCase();
+  DB.choferes
+    .filter(c => c.nombre.toLowerCase().includes(lq) || c.dni.includes(lq))
+    .forEach(c => {
+      const total = c.entregas.reduce((s, e) => s + e.elementos.length, 0);
+      const div = document.createElement('div');
+      div.className = 'chofer-item' + (c.id === currentId ? ' active' : '');
+      div.innerHTML = `
+        <div class="chofer-avatar">${initials(c.nombre)}</div>
+        <div class="chofer-meta">
+          <div class="chofer-name">${cap(c.nombre)}</div>
+          <div class="chofer-detail">DNI ${c.dni} &middot; ${total} elem.</div>
+        </div>`;
+      div.onclick = () => { selectChofer(c.id); closeSidebar(); };
+      list.appendChild(div);
+    });
+}
+ 
+function filterChoferes() {
+  renderSidebar(document.getElementById('searchInput').value);
+}
+ 
+// ════════════════════════════════════════════════════════════════
+// MOBILE SIDEBAR
+// ════════════════════════════════════════════════════════════════
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+ 
+// ════════════════════════════════════════════════════════════════
+// SELECT CHOFER
+// ════════════════════════════════════════════════════════════════
+function selectChofer(id) {
+  currentId = id;
+  renderSidebar(document.getElementById('searchInput').value);
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('choferDetail').style.display = 'block';
+  renderDetail();
+}
+ 
+function renderDetail() {
+  const chofer = DB.choferes.find(c => c.id === currentId);
+  if (!chofer) return;
+ 
+  const aKey = `ch_${chofer.id}`;
+  if (!auditData[aKey]) auditData[aKey] = {};
+ 
+  const total = chofer.entregas.reduce((s, e) => s + e.elementos.length, 0);
+  let ok=0, falt=0, pend=0;
+  chofer.entregas.forEach(e => e.elementos.forEach((_, ei) => {
+    const st = auditData[aKey][`${e.fecha}_${ei}`]?.estado || 'Pendiente';
+    if (st==='Presente') ok++; else if(st==='Faltante') falt++; else pend++;
+  }));
+ 
+  let html = `
+    <!-- Print header -->
+    <div class="print-only">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <rect x="2" y="9" width="17" height="3.2" rx="1.6" fill="#cc2233"/>
+        <rect x="2" y="14.4" width="12" height="3.2" rx="1.6" fill="#cc2233"/>
+        <circle cx="28.5" cy="20" r="9.5" stroke="#cc2233" stroke-width="3.2" fill="none"/>
+      </svg>
+      <div>
+        <div style="font-weight:700;font-size:1rem">${cap(chofer.nombre)}</div>
+        <div style="font-size:.75rem;color:#666">DNI ${chofer.dni} · Transporte Arce Hnos. · Impreso ${new Date().toLocaleDateString('es-AR')}</div>
+      </div>
+    </div>
+ 
+    <div class="chofer-hd">
+      <div class="chofer-hd-left">
+        <h2>${cap(chofer.nombre)}</h2>
+        <div class="badges">
+          <span class="badge badge-ink">DNI ${chofer.dni}</span>
+          <span class="badge badge-border">${chofer.entregas.length} entrega${chofer.entregas.length!==1?'s':''}</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-red"   onclick="openModal()">+ Nuevo elemento</button>
+        <button class="btn btn-dark"  onclick="window.print()">Imprimir</button>
+        <button class="btn btn-green" onclick="syncToSheet()">↑ Sincronizar</button>
+      </div>
+    </div>
+ 
+    <div class="stats">
+      <div class="stat"><div class="stat-n">${total}</div><div class="stat-lbl">Total</div></div>
+      <div class="stat"><div class="stat-n">${chofer.entregas.length}</div><div class="stat-lbl">Entregas</div></div>
+      <div class="stat"><div class="stat-n green">${ok}</div><div class="stat-lbl">Presentes</div></div>
+      <div class="stat"><div class="stat-n red">${falt}</div><div class="stat-lbl">Faltantes</div></div>
+      <div class="stat"><div class="stat-n amber">${pend}</div><div class="stat-lbl">Sin verificar</div></div>
+    </div>
+  `;
+ 
+  chofer.entregas.forEach((entrega, ei) => {
+    const vehs = entrega.vehiculos.length
+      ? entrega.vehiculos.map(v => `<span class="veh-tag">${v}</span>`).join('')
+      : '';
+ 
+    html += `
+      <div class="entrega-card">
+        <div class="entrega-head">
+          <div class="entrega-head-left">
+            <span class="entrega-num">${ei+1}</span>
+            <h3>Entrega — ${fmtFecha(entrega.fecha)}</h3>
+          </div>
+          <div class="veh-tags">${vehs}</div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th style="width:38%">Elemento</th>
+                <th style="width:14%">Unidades</th>
+                <th style="width:11%">Fecha</th>
+                <th style="width:18%">Estado</th>
+                <th class="nota-col">Notas</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+ 
+    entrega.elementos.forEach((el, eli) => {
+      const k  = `${entrega.fecha}_${eli}`;
+      const sv = auditData[aKey][k] || {};
+      const st = sv.estado || 'Pendiente';
+      const nt = sv.nota   || '';
+      const sc = st==='Presente'?'s-ok': st==='Faltante'?'s-falt':'s-pend';
+      const vehCell = entrega.vehiculos.length
+        ? entrega.vehiculos.map(v=>`<span class="veh-tag" style="font-size:.6rem;padding:1px 6px">${v}</span>`).join('')
+        : '<span style="color:var(--ink-faint);font-size:.75rem">—</span>';
+ 
+      html += `
+        <tr>
+          <td class="el-name">${cap(el)}</td>
+          <td>${vehCell}</td>
+          <td class="fecha-txt">${fmtFecha(entrega.fecha)}</td>
+          <td>
+            <select class="state-select ${sc}"
+              onchange="updateAudit(${currentId},'${entrega.fecha}',${eli},this.value,null);this.className='state-select '+(this.value==='Presente'?'s-ok':this.value==='Faltante'?'s-falt':'s-pend')">
+              <option value="Presente"  ${st==='Presente' ?'selected':''}>✅ Presente</option>
+              <option value="Faltante"  ${st==='Faltante' ?'selected':''}>❌ Faltante</option>
+              <option value="Pendiente" ${st==='Pendiente'?'selected':''}>⏳ Pendiente</option>
+            </select>
+          </td>
+          <td class="nota-col">
+            <input class="note-inp" type="text" placeholder="Agregar nota…"
+              value="${esc(nt)}"
+              onchange="updateAudit(${currentId},'${entrega.fecha}',${eli},null,this.value)" />
+          </td>
+        </tr>
+      `;
+    });
+ 
+    html += `</tbody></table></div></div>`;
+  });
+ 
+  document.getElementById('choferDetail').innerHTML = html;
+}
+ 
+function fmtFecha(f) {
+  if (!f) return '—';
+  const [y,m,d] = f.split('-');
+  return `${d} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][+m-1]} ${y}`;
+}
+function esc(s){ return s.replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+ 
+// ════════════════════════════════════════════════════════════════
+// AUDIT UPDATE
+// ════════════════════════════════════════════════════════════════
+function updateAudit(choferId, fecha, eli, newEstado, newNota) {
+  const aKey = `ch_${choferId}`;
+  if (!auditData[aKey]) auditData[aKey] = {};
+  const k = `${fecha}_${eli}`;
+  if (!auditData[aKey][k]) auditData[aKey][k] = { estado:'Pendiente', nota:'' };
+  if (newEstado !== null) auditData[aKey][k].estado = newEstado;
+  if (newNota   !== null) auditData[aKey][k].nota   = newNota;
+  saveLocal();
+ 
+  // Refresh stat numbers
+  const chofer = DB.choferes.find(c=>c.id===choferId);
+  if (chofer) {
+    let ok=0,falt=0,pend=0;
+    chofer.entregas.forEach(e=>e.elementos.forEach((_,i)=>{
+      const st=auditData[aKey][`${e.fecha}_${i}`]?.estado||'Pendiente';
+      if(st==='Presente')ok++; else if(st==='Faltante')falt++; else pend++;
+    }));
+    const ns=document.querySelectorAll('.stat-n');
+    if(ns.length>=5){ns[2].textContent=ok;ns[3].textContent=falt;ns[4].textContent=pend;}
+  }
+  showToast('Cambio guardado');
+}
+ 
+// ════════════════════════════════════════════════════════════════
+// MODAL
+// ════════════════════════════════════════════════════════════════
+function openModal() {
+  document.getElementById('newFecha').value = new Date().toISOString().split('T')[0];
+  ['newElemento','newVehiculo1','newVehiculo2','newNota'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('newEstado').value='Pendiente';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function agregarElemento() {
+  const el   = document.getElementById('newElemento').value.trim();
+  const fch  = document.getElementById('newFecha').value;
+  if (!el)  { showToast('Ingresá el nombre del elemento', true); return; }
+  if (!fch) { showToast('Ingresá la fecha de entrega',   true); return; }
+  const v1   = document.getElementById('newVehiculo1').value.trim().toUpperCase();
+  const v2   = document.getElementById('newVehiculo2').value.trim().toUpperCase();
+  const nota = document.getElementById('newNota').value.trim();
+  const est  = document.getElementById('newEstado').value;
+ 
+  const chofer = DB.choferes.find(c=>c.id===currentId);
+  let entrega  = chofer.entregas.find(e=>e.fecha===fch && JSON.stringify(e.vehiculos)===JSON.stringify([v1,v2].filter(Boolean)));
+  if (!entrega) {
+    entrega = { fecha:fch, vehiculos:[v1,v2].filter(Boolean), elementos:[] };
+    chofer.entregas.push(entrega);
+    chofer.entregas.sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  }
+  entrega.elementos.push(el);
+  const aKey = `ch_${currentId}`;
+  if (!auditData[aKey]) auditData[aKey]={};
+  auditData[aKey][`${fch}_${entrega.elementos.length-1}`]={ estado:est, nota };
+  saveLocal();
+  closeModal();
+  renderDetail();
+  showToast('Elemento agregado');
+}
+ 
+// ════════════════════════════════════════════════════════════════
+// SYNC
+// ════════════════════════════════════════════════════════════════
+function testConnection() {
+  const url = document.getElementById('sheetUrl').value.trim();
+  if (!url||!url.startsWith('https://')) { showToast('URL inválida',true); return; }
+  sheetUrl = url;
+  localStorage.setItem('arce_sheet_url', url);
+  document.getElementById('syncStatus').textContent = 'URL guardada';
+  showToast('URL configurada');
+}
+ 
+async function syncToSheet() {
+  if (!sheetUrl) { showToast('Configurá la URL del Web App primero', true); return; }
+  const chofer = DB.choferes.find(c=>c.id===currentId);
+  if (!chofer) return;
+  const aKey = `ch_${chofer.id}`;
+  const rows = [];
+  chofer.entregas.forEach(e=>e.elementos.forEach((el,eli)=>{
+    const sv = auditData[aKey]?.[`${e.fecha}_${eli}`]||{};
+    rows.push({ chofer:chofer.nombre, dni:chofer.dni, fecha_entrega:e.fecha,
+      vehiculos:e.vehiculos.join(' / '), elemento:el,
+      estado:sv.estado||'Pendiente', nota:sv.nota||'',
+      fecha_auditoria:new Date().toISOString().split('T')[0] });
+  }));
+  try {
+    document.getElementById('syncStatus').textContent = 'Sincronizando…';
+    await fetch(sheetUrl,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'sync',chofer:chofer.nombre,rows})});
+    document.getElementById('syncStatus').textContent = `Sincronizado ${new Date().toLocaleTimeString('es-AR')}`;
+    showToast('Datos enviados al Sheet');
+  } catch(e) {
+    document.getElementById('syncStatus').textContent = 'Error de conexión';
+    showToast('No se pudo conectar',true);
+  }
+}
+ 
+// ════════════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════════════
+let _tt;
+function showToast(msg, err=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderLeftColor = err ? '#cc2233' : 'var(--green)';
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+ 
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+loadLocal();
+renderSidebar();
+document.getElementById('sheetUrl').addEventListener('change',function(){
+  sheetUrl=this.value.trim();
+  localStorage.setItem('arce_sheet_url',sheetUrl);
+});
+</script>
+</body>
+</html>
