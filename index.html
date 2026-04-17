@@ -1,291 +1,494 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arce Hnos. — Control de Elementos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --rojo: #D62A35;
-            --azul: #001841;
-            --azul-light: #002a5c;
-            --blanco: #FFFFFF;
-            --gris-claro: #f8f9fa;
-            --gris-borde: #e2e8f0;
-            --gris-texto: #64748b;
-            --verde: #22c55e;
-            --amarillo: #eab308;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arce Hnos. — Control de Elementos</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rojo: #D62A35;
+    --azul: #001841;
+    --blanco: #FFFFFF;
+    --gris-claro: #f4f7fa;
+    --gris-borde: #dde1e9;
+    --gris-texto: #4a5568;
+    --verde: #16a34a;
+    --amarillo: #ca8a04;
+    --shadow: 0 4px 12px rgba(0,24,65,0.08);
+  }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: var(--gris-claro);
-            color: var(--azul);
-            line-height: 1.5;
-        }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--gris-claro);
+    color: var(--azul);
+    min-height: 100vh;
+  }
 
-        /* ── HEADER ── */
-        header {
-            background: var(--azul);
-            color: var(--blanco);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow-lg);
-        }
-        .header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 20px;
-            border-bottom: 4px solid var(--rojo);
-        }
-        .brand { display: flex; align-items: center; gap: 15px; }
-        .logo-text { font-weight: 900; font-size: 1.4rem; letter-spacing: -0.5px; }
-        .logo-text span { color: var(--rojo); }
+  /* ── HEADER ── */
+  header {
+    background: var(--azul);
+    color: var(--blanco);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    border-bottom: 3px solid var(--rojo);
+  }
+  .header-title h1 {
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .header-title p {
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
 
-        /* ── LAYOUT RESPONSIVE ── */
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+  /* ── SYNC BANNER ── */
+  .sync-banner {
+    background: #002561;
+    color: white;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .sync-url-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 0.7rem;
+  }
 
-        @media (min-width: 992px) {
-            .app-container { flex-direction: row; }
-            .sidebar { width: 320px; height: calc(100vh - 75px); position: sticky; top: 75px; }
-            .main-content { flex: 1; padding: 30px; }
-        }
+  /* ── LAYOUT RESPONSIVO ── */
+  .app-wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: calc(100vh - 110px);
+  }
 
-        /* ── SIDEBAR / LISTA CHOFERES ── */
-        .sidebar {
-            background: var(--blanco);
-            border-right: 1px solid var(--gris-borde);
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .search-container { margin-bottom: 20px; }
-        .search-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--gris-borde);
-            border-radius: 10px;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-        .search-input:focus { border-color: var(--azul); outline: none; }
+  @media (max-width: 850px) {
+    .app-wrapper { grid-template-columns: 1fr; }
+    .sidebar { height: 300px; border-right: none; border-bottom: 2px solid var(--gris-borde); }
+  }
 
-        .chofer-card {
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-            background: var(--gris-claro);
-        }
-        .chofer-card:hover { background: #edf2f7; }
-        .chofer-card.active {
-            background: white;
-            border-color: var(--rojo);
-            box-shadow: var(--shadow);
-        }
-        .chofer-card h4 { font-size: 0.95rem; font-weight: 800; color: var(--azul); text-transform: uppercase; }
-        .chofer-card p { font-size: 0.8rem; color: var(--gris-texto); }
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: var(--blanco);
+    border-right: 1px solid var(--gris-borde);
+    padding: 20px 0;
+    overflow-y: auto;
+    position: sticky;
+    top: 110px;
+  }
+  .sidebar-section-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--rojo);
+    text-transform: uppercase;
+    padding: 0 20px 10px;
+    letter-spacing: 1px;
+  }
+  .search-box { padding: 0 15px 15px; }
+  .search-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px solid var(--gris-borde);
+    border-radius: 8px;
+    font-family: inherit;
+  }
 
-        /* ── MAIN CONTENT ── */
-        .main-content { padding: 20px; }
-        .detail-header {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .chofer-title h2 { font-size: 1.8rem; font-weight: 900; color: var(--azul); }
-        
-        /* ── TABLA RESPONSIVE ── */
-        .table-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-        .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: var(--azul); color: white; padding: 15px; text-align: left; font-size: 0.8rem; text-transform: uppercase; }
-        td { padding: 15px; border-bottom: 1px solid var(--gris-borde); font-size: 0.9rem; }
-        tr:last-child td { border-bottom: none; }
+  .chofer-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    transition: 0.2s;
+  }
+  .chofer-item:hover { background: #f8fafc; }
+  .chofer-item.active {
+    background: #fff5f5;
+    border-left-color: var(--rojo);
+  }
+  .chofer-name { font-weight: 800; font-size: 0.85rem; display: block; }
+  .chofer-dni { font-size: 0.75rem; color: var(--gris-texto); }
 
-        /* ── BOTONES ── */
-        .btn {
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.1s, opacity 0.2s;
-            font-size: 0.85rem;
-        }
-        .btn:active { transform: scale(0.98); }
-        .btn-primary { background: var(--rojo); color: white; }
-        .btn-secondary { background: var(--azul); color: white; }
-        .btn-outline { background: white; border: 2px solid var(--gris-borde); color: var(--azul); }
+  /* ── MAIN PANEL ── */
+  .main-panel { padding: 20px; }
+  
+  .chofer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
 
-        /* ── ESTADOS ── */
-        .status-pill {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-        .pill-ok { background: #dcfce7; color: #166534; }
-        .pill-error { background: #fee2e2; color: #991b1b; }
-        .pill-wait { background: #fef9c3; color: #854d0e; }
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stat-num { font-size: 1.4rem; font-weight: 900; color: var(--azul); }
+  .stat-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--gris-texto); }
 
-        .nota-input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid var(--gris-borde);
-            border-radius: 6px;
-            font-family: inherit;
-        }
+  /* ── TABLAS ── */
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .section-card-header {
+    background: var(--azul);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+  .table-responsive { overflow-x: auto; }
+  .elementos-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 600px; }
+  .elementos-table th { background: #f1f5f9; padding: 12px 15px; text-align: left; color: var(--gris-texto); font-weight: 800; text-transform: uppercase; font-size: 0.7rem; }
+  .elementos-table td { padding: 12px 15px; border-bottom: 1px solid var(--gris-borde); }
 
-        /* ── MOBILE ADAPTATION ── */
-        @media (max-width: 768px) {
-            .chofer-title h2 { font-size: 1.4rem; }
-            .btn { width: 100%; justify-content: center; }
-            .detail-header { flex-direction: column; align-items: stretch; }
-        }
+  /* ── INPUTS DENTRO DE TABLA ── */
+  .audit-select, .nota-input {
+    width: 100%;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid var(--gris-borde);
+    font-family: inherit;
+    font-size: 0.8rem;
+  }
 
-        /* ── PRINT ── */
-        @media print {
-            .sidebar, .btn, header, .search-container { display: none !important; }
-            .app-container { display: block; }
-            .main-content { padding: 0; }
-            .table-container { box-shadow: none; border: 1px solid black; }
-        }
-    </style>
+  .btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 800;
+    cursor: pointer;
+    border: none;
+    font-size: 0.8rem;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary { background: var(--rojo); color: white; }
+  .btn-secondary { background: var(--azul); color: white; }
+  .btn-success { background: var(--verde); color: white; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; }
+  .form-group { margin-bottom: 12px; }
+  .form-group label { display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; }
+  .form-group input, .form-group select { width: 100%; padding: 10px; border: 1.5px solid var(--gris-borde); border-radius: 8px; }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--azul);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    display: none;
+    z-index: 1000;
+  }
+
+  @media print {
+    header, .sidebar, .btn, .sync-banner, .search-box { display: none !important; }
+    .app-wrapper { display: block; }
+    .main-panel { padding: 0; }
+  }
+</style>
 </head>
 <body>
 
 <header>
-    <div class="header-inner">
-        <div class="brand">
-            <div class="logo-text">ARCE <span>Hnos.</span></div>
-        </div>
-        <div class="system-tag" style="font-size: 0.7rem; font-weight: 800; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">
-            Auditoría de Logística
-        </div>
+  <div class="header-inner">
+    <div class="header-title">
+      <h1>Arce Hnos. — Control de Choferes</h1>
+      <p>Logística & Transporte · Auditoría de Elementos</p>
     </div>
+  </div>
+  <div class="sync-banner">
+    <div>
+      <span>Google Sheet URL:</span>
+      <input type="text" class="sync-url-input" id="sheetUrl" placeholder="URL de Apps Script..." />
+      <button class="btn-primary" style="padding: 4px 10px; font-size: 0.7rem; border-radius: 4px;" onclick="testConnection()">Conectar</button>
+    </div>
+    <span id="syncStatus" style="opacity: 0.8;">Local</span>
+  </div>
 </header>
 
-<div class="app-container">
-    <aside class="sidebar">
-        <div class="search-container">
-            <input type="text" class="search-input" id="searchInput" placeholder="Buscar chofer o DNI..." oninput="filterChoferes()">
-        </div>
-        <div id="choferList">
-            </div>
-    </aside>
+<div class="toast" id="toast"></div>
 
-    <main class="main-content" id="mainPanel">
-        <div id="emptyState" style="text-align: center; padding-top: 100px; color: var(--gris-texto);">
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="opacity: 0.3; margin-bottom: 20px;">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-            <h3>Seleccione un chofer de la lista</h3>
-            <p>Para gestionar y auditar sus elementos asignados</p>
-        </div>
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 style="margin-bottom: 15px;">Asignar Nuevo Elemento</h3>
+    <div class="form-group">
+      <label>Elemento</label>
+      <input type="text" id="newElemento" placeholder="Ej: Matafuego 5kg">
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <div class="form-group" style="flex:1">
+        <label>Vehículo 1</label>
+        <input type="text" id="newVehiculo1">
+      </div>
+      <div class="form-group" style="flex:1">
+        <label>Vehículo 2</label>
+        <input type="text" id="newVehiculo2">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Fecha</label>
+      <input type="date" id="newFecha">
+    </div>
+    <div class="form-group">
+      <label>Estado Inicial</label>
+      <select id="newEstado">
+        <option value="Pendiente">⏳ Pendiente</option>
+        <option value="Presente">✅ Presente</option>
+        <option value="Faltante">❌ Faltante</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Notas</label>
+      <input type="text" id="newNota">
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="agregarElemento()">Guardar</button>
+    </div>
+  </div>
+</div>
 
-        <div id="choferDetail" style="display:none">
-            </div>
-    </main>
+<div class="app-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-section-title">Nómina de Choferes</div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar..." oninput="filterChoferes()" />
+    </div>
+    <div id="choferList"></div>
+  </aside>
+
+  <main class="main-panel">
+    <div id="emptyState" style="text-align: center; padding: 100px 20px; opacity: 0.5;">
+       <h3>Seleccione un chofer para comenzar</h3>
+    </div>
+    <div id="choferDetail" style="display:none"></div>
+  </main>
 </div>
 
 <script>
-// (El resto del código JS se mantiene igual en lógica, pero actualizando los renders para usar las nuevas clases de CSS)
-
-// Reutilizamos la base de datos (DB) que proporcionaste
+// ══════════════════════════════════════════════
+// DATA (Igual que el original)
+// ══════════════════════════════════════════════
 const DB = {
-    choferes: [
-        { id: 1, nombre: "VIDELA JONATHAN DARIO", dni: "31640017", entregas: [{ fecha: "2025-12-16", vehiculos: ["AG807KZ","AG807KF"], elementos: ["Funda asientos"] }] },
-        { id: 3, nombre: "SOSA SIMON ANDRES", dni: "39422949", entregas: [{ fecha: "2025-12-03", vehiculos: ["AF482AS","AF733GV"], elementos: ["2 Matafuegos 5kg", "Gato", "Documentación"] }] },
-        { id: 7, nombre: "RAMIREZ FRANCO IVAN", dni: "41215706", entregas: [{ fecha: "2025-10-27", vehiculos: ["AH246JHP"], elementos: ["Gato", "Balizas", "Matafuegos"] }] }
-        // ... (resto de choferes)
-    ]
+  choferes: [
+    { id: 1, nombre: "VIDELA JONATHAN DARIO", dni: "31640017", entregas: [{ fecha: "2025-12-16", vehiculos: ["AG807KZ","AG807KF"], elementos: ["Funda asientos conductor y acompañante"] }] },
+    { id: 2, nombre: "VARGAS FRANCISCO NAHUEL", dni: "43158192", entregas: [{ fecha: "2025-12-06", vehiculos: ["AD751NF","AH492CR"], elementos: ["Juego de cuñas nuevo"] }] },
+    { id: 3, nombre: "SOSA SIMON ANDRES", dni: "39422949", entregas: [{ fecha: "2025-12-03", vehiculos: ["AF482AS","AF733GV"], elementos: ["Llave unidad, llave predio y llavero surtidor", "2 Matafuego 5 kg", "9 fajas con sus respectivas tracas", "Perno de enganche", "Gato", "Documentación completa"] }, { fecha: "2026-01-17", vehiculos: ["AF482AS","AF733GV"], elementos: ["Fundas asiento chofer y acompañante"] }] },
+    { id: 4, nombre: "ROJAS MAYCO", dni: "41116941", entregas: [{ fecha: "2025-09-08", vehiculos: ["AE219VG","AB249CK"], elementos: ["Documentación completa", "5 fajas con sus tracas", "Matafuego 5 kg", "Gato"] }] },
+    { id: 7, nombre: "RAMIREZ FRANCO IVAN", dni: "41215706", entregas: [{ fecha: "2025-10-27", vehiculos: ["AH246JHP","AF996UM"], elementos: ["1 Gato", "Perno de enganche", "Matafuego 5 Kg", "5 Fajas con sus tracas", "Documentación completa"] }] },
+    { id: 10, nombre: "IRACHETA MARTIN EZEQUIEL", dni: "35884403", entregas: [{ fecha: "2026-03-15", vehiculos: ["AI063WC","AI063WD"], elementos: ["Pala", "Balde de arena", "Lanza de arrastre", "2 mata fuego 5 kg", "Caja de herramientas original", "Documentación completa"] }] },
+    { id: 15, nombre: "VASCONCELO OSVALDO FERNANDO", dni: "31591622", entregas: [{ fecha: "2025-12-06", vehiculos: ["AH920LE","AH920KP"], elementos: ["Documentación completa", "Manual unidad", "2 matafuegos 5 kg", "Lanza", "Pala plástica", "Juego de cuñas"] }] },
+    { id: 19, nombre: "GUAJARDO DARIO IGNACIO", dni: "33890528", entregas: [{ fecha: "2025-03-10", vehiculos: ["AF713FD","AF074SD"], elementos: ["11 Fajas de sujeción", "1 matafuegos de 5 kg", "1 soga precinto", "Gato", "Documentación completa"] }] },
+    { id: 21, nombre: "BRAIAN MAURICIO EZEQUIEL", dni: "27018324", entregas: [{ fecha: "2025-12-06", vehiculos: ["AF087FB","AH246JT"], elementos: ["LLAVE UNIDAD", "VALIZAS", "CUÑAS", "PERNO DE ENGANCHE", "2 MATAFUEGOS 5 KG", "MANGUERA DE INFLADO"] }] },
+    { id: 22, nombre: "ALCANIS MAXIMILIANO", dni: "39993787", entregas: [{ fecha: "2026-03-17", vehiculos: ["AF206YP","AH669DS"], elementos: ["PALA", "BALDE", "CONOS", "2 MATAFUEGOS DE 5 KG", "CASCO Y CHALECO", "DOCUMENTACIÓN COMPLETA"] }] }
+  ]
 };
 
-function filterChoferes() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    const list = document.getElementById('choferList');
-    list.innerHTML = '';
-    
-    DB.choferes.filter(c => c.nombre.toLowerCase().includes(q) || c.dni.includes(q)).forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'chofer-card';
-        div.innerHTML = `<h4>${c.nombre}</h4><p>DNI: ${c.dni}</p>`;
-        div.onclick = () => selectChofer(c);
-        list.appendChild(div);
+let currentChoferId = null;
+let auditData = {};
+let sheetWebAppUrl = '';
+
+// ══════════════════════════════════════════════
+// LÓGICA (Funciones originales reparadas)
+// ══════════════════════════════════════════════
+
+function loadLocal() {
+  const saved = localStorage.getItem('arce_audit');
+  if (saved) auditData = JSON.parse(saved);
+  const url = localStorage.getItem('arce_sheet_url');
+  if (url) {
+    sheetWebAppUrl = url;
+    document.getElementById('sheetUrl').value = url;
+  }
+}
+
+function saveLocal() {
+  localStorage.setItem('arce_audit', JSON.stringify(auditData));
+}
+
+function renderSidebar(filter = '') {
+  const list = document.getElementById('choferList');
+  list.innerHTML = '';
+  const q = filter.toLowerCase();
+  
+  DB.choferes
+    .filter(c => c.nombre.toLowerCase().includes(q) || c.dni.includes(q))
+    .forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'chofer-item' + (c.id === currentChoferId ? ' active' : '');
+      div.innerHTML = `
+        <span class="chofer-name">${c.nombre}</span>
+        <span class="chofer-dni">DNI ${c.dni}</span>
+      `;
+      div.onclick = () => selectChofer(c.id);
+      list.appendChild(div);
     });
 }
 
-function selectChofer(chofer) {
-    document.getElementById('emptyState').style.display = 'none';
-    const detail = document.getElementById('choferDetail');
-    detail.style.display = 'block';
-    
-    let entregasHTML = chofer.entregas.map((e, idx) => `
-        <div class="table-container">
-            <div style="background: var(--gris-claro); padding: 15px; border-bottom: 1px solid var(--gris-borde); display: flex; justify-content: space-between;">
-                <strong>Entrega #${idx + 1} — ${e.fecha}</strong>
-                <span style="color: var(--rojo); font-weight: 800;">${e.vehiculos.join(' / ')}</span>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Elemento</th>
-                            <th>Estado</th>
-                            <th>Observaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${e.elementos.map(el => `
-                            <tr>
-                                <td style="font-weight:700;">${el}</td>
-                                <td>
-                                    <select class="nota-input" style="font-weight:700;">
-                                        <option>⏳ Pendiente</option>
-                                        <option>✅ Presente</option>
-                                        <option>❌ Faltante</option>
-                                    </select>
-                                </td>
-                                <td><input type="text" class="nota-input" placeholder="..."></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    `).join('');
+function filterChoferes() {
+  renderSidebar(document.getElementById('searchInput').value);
+}
 
-    detail.innerHTML = `
-        <div class="detail-header">
-            <div class="chofer-title">
-                <p style="color: var
+function selectChofer(id) {
+  currentChoferId = id;
+  renderSidebar(document.getElementById('searchInput').value);
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('choferDetail').style.display = 'block';
+  renderDetail();
+}
+
+function renderDetail() {
+  const chofer = DB.choferes.find(c => c.id === currentChoferId);
+  if (!chofer) return;
+
+  const auditKey = `ch_${chofer.id}`;
+  if (!auditData[auditKey]) auditData[auditKey] = {};
+
+  let ok = 0, falt = 0, pend = 0;
+  let totalElem = 0;
+
+  chofer.entregas.forEach(e => {
+    e.elementos.forEach((el, ei) => {
+      totalElem++;
+      const k = `${e.fecha}_${ei}`;
+      const estado = auditData[auditKey][k]?.estado || 'Pendiente';
+      if (estado === 'Presente') ok++;
+      else if (estado === 'Faltante') falt++;
+      else pend++;
+    });
+  });
+
+  let html = `
+    <div class="chofer-header">
+      <div>
+        <h2 style="font-weight:900; color:var(--azul)">${chofer.nombre}</h2>
+        <span style="font-size:0.8rem; background:var(--azul); color:white; padding:2px 8px; border-radius:4px;">DNI ${chofer.dni}</span>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-primary" onclick="openModal()">➕ Nuevo</button>
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF</button>
+        <button class="btn btn-success" onclick="syncToSheet()">☁️ Sincronizar</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">${totalElem}</div><div class="stat-label">Total</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--verde)">${ok}</div><div class="stat-label">OK</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--rojo)">${falt}</div><div class="stat-label">Faltan</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--amarillo)">${pend}</div><div class="stat-label">Pend.</div></div>
+    </div>
+  `;
+
+  chofer.entregas.forEach((entrega, ei) => {
+    html += `
+      <div class="section-card">
+        <div class="section-card-header">
+          <span>📅 Entrega: ${entrega.fecha}</span>
+          <span>🚚 ${entrega.vehiculos.join(' / ')}</span>
+        </div>
+        <div class="table-responsive">
+          <table class="elementos-table">
+            <thead>
+              <tr>
+                <th style="width:40%">Elemento</th>
+                <th style="width:25%">Estado</th>
+                <th>Notas / Observaciones</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+
+    entrega.elementos.forEach((el, eli) => {
+      const k = `${entrega.fecha}_${eli}`;
+      const saved = auditData[auditKey][k] || {};
+      const estado = saved.estado || 'Pendiente';
+      const nota = saved.nota || '';
+
+      html += `
+        <tr>
+          <td style="font-weight:700">${el}</td>
+          <td>
+            <select class="audit-select" onchange="updateAudit(${chofer.id}, '${entrega.fecha}', ${eli}, this.value, null)">
+              <option value="Presente" ${estado === 'Presente' ? 'selected' : ''}>✅ Presente</option>
+              <option value="Faltante" ${estado === 'Faltante' ? 'selected' : ''}>❌ Faltante</option>
+              <option value="Pendiente" ${estado === 'Pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" class="nota-input" value="${nota}" placeholder="..." 
+              onchange="updateAudit(${chofer.id}, '${entrega.fecha}', ${eli}, null, this.value)">
+          </td>
+        </tr>
+      `;
+    });
+
+    html += `</tbody></table></div></div>`;
+  });
+
+  document.getElementById('choferDetail').innerHTML = html;
+}
+
+function updateAudit(choferId, fecha, eli, newEstado, newNota) {
+  const auditKey = `ch_${choferId}`;
+  if (!auditData[auditKey]) auditData[auditKey] = {};
+  const k = `${fecha}_${eli}`;
+  if (!auditData[auditKey][k]) auditData[auditKey][k] = { estado: 'Pendiente', nota: '' };
+
+  if (newEstado !== null) auditData[auditKey][k].estado = newEstado;
+  if (newNota !== null) auditData[auditKey][k].
